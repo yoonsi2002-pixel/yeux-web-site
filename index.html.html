@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>yeux</title>
+    <!-- Google Fonts: Bebas Neue for Jennie Shop style menu typography, Cinzel for Logo -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cinzel:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background-color: #1f1f1f; /* Modern Grey Mood Background */
+            color: #ffffff;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* 1. Header (Jennie style header: Left Menu =, Center Logo, Right Spacer) */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 22px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.6), transparent);
+        }
+
+        .menu-toggle-btn {
+            background: none;
+            border: none;
+            color: #ffffff;
+            font-size: 24px;
+            cursor: pointer;
+            letter-spacing: -2px;
+            line-height: 1;
+            padding: 4px;
+        }
+
+        .logo-title {
+            font-family: 'Cinzel', serif;
+            font-size: 28px;
+            font-weight: 500;
+            font-style: italic;
+            letter-spacing: 3px;
+            text-transform: lowercase;
+            color: #ffffff;
+            text-decoration: none;
+        }
+
+        .header-spacer {
+            width: 24px;
+        }
+
+        /* 2. Left Slide Drawer Navigation (Identical UI to Jennie's shopasia.jenn.ie menu) */
+        .drawer-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 200;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .drawer-backdrop.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .left-drawer {
+            position: fixed;
+            top: 0;
+            left: -100%;
+            width: 85%;
+            max-width: 360px;
+            height: 100vh;
+            background-color: #ffffff; /* Clean White Drawer Menu like Jennie shop */
+            color: #000000;
+            z-index: 300;
+            padding: 32px 28px;
+            display: flex;
+            flex-direction: column;
+            transition: left 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 8px 0 30px rgba(0,0,0,0.3);
+            overflow-y: auto;
+        }
+
+        .left-drawer.active {
+            left: 0;
+        }
+
+        .drawer-close-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #000000;
+            align-self: flex-start;
+            margin-bottom: 40px;
+            font-weight: 300;
+        }
+
+        .drawer-menu-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+        }
+
+        .drawer-menu-list a {
+            font-family: 'Bebas Neue', sans-serif; /* High-impact condensed font like Jennie's shop menu */
+            font-size: 34px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #000000;
+            text-decoration: none;
+            transition: opacity 0.2s;
+            display: block;
+        }
+
+        .drawer-menu-list a:hover {
+            opacity: 0.5;
+        }
+
+        .magazine-sub-links {
+            margin-top: 8px;
+            padding-left: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .magazine-sub-links a {
+            font-family: 'Inter', sans-serif !important;
+            font-size: 13px !important;
+            font-weight: 500 !important;
+            text-transform: none !important;
+            color: #555555 !important;
+            letter-spacing: 0.5px !important;
+        }
+
+        .magazine-sub-links a:hover {
+            color: #000000 !important;
+        }
+
+        /* 3. Hero Visual Background Cover (Full Screen with user's IMG_4798.jpeg) */
+        .hero-cover {
+            height: 100vh;
+            width: 100%;
+            background: linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.65) 100%), url('IMG_4798.jpeg') no-repeat center center/cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .hero-title {
+            font-family: 'Cinzel', serif;
+            font-size: 64px;
+            font-weight: 400;
+            font-style: italic;
+            letter-spacing: 6px;
+            text-transform: lowercase;
+            color: #ffffff;
+        }
+
+        .hero-subtitle {
+            font-size: 11px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: #cccccc;
+            margin-top: 12px;
+        }
+
+        /* 4. Main Content Layout (Grey Background & Clean Editorial Vertical Feed) */
+        .main-container {
+            max-width: 640px;
+            margin: 0 auto;
+            padding: 40px 20px 100px;
+        }
+
+        .category-block {
+            padding: 80px 0 40px;
+            border-bottom: 1px solid #333333;
+        }
+
+        .category-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 24px;
+        }
+
+        .category-name {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 32px;
+            letter-spacing: 2px;
+            color: #ffffff;
+        }
+
+        .category-number {
+            font-size: 11px;
+            color: #888888;
+            letter-spacing: 1px;
+        }
+
+        .category-text {
+            font-size: 14px;
+            color: #bbbbbb;
+            line-height: 1.8;
+        }
+
+        .vertical-feed {
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+            margin-top: 24px;
+        }
+
+        .feed-card {
+            background-color: #2a2a2a;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid #383838;
+        }
+
+        .feed-card img {
+            width: 100%;
+            aspect-ratio: 3 / 4;
+            object-fit: cover;
+            display: block;
+        }
+
+        .feed-card .caption {
+            padding: 14px 16px;
+            font-size: 12px;
+            color: #999999;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* 5. yeux magazine PDF Grid Section */
+        .magazine-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            margin-top: 24px;
+        }
+
+        .pdf-card {
+            background-color: #2a2a2a;
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid #383838;
+            text-decoration: none;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: border-color 0.2s, transform 0.2s;
+        }
+
+        .pdf-card:hover {
+            border-color: #ffffff;
+            transform: translateY(-2px);
+        }
+
+        .pdf-tag {
+            font-size: 10px;
+            color: #888888;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 8px;
+        }
+
+        .pdf-title {
+            font-family: 'Cinzel', serif;
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .pdf-action {
+            font-size: 11px;
+            color: #ffffff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 500;
+        }
+
+        footer {
+            text-align: center;
+            padding: 60px 20px;
+            font-size: 11px;
+            color: #666666;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. Header (Menu icon =, Center Logo) -->
+    <header>
+        <button class="menu-toggle-btn" onclick="openDrawer()">☰</button>
+        <a href="#" class="logo-title">yeux</a>
+        <div class="header-spacer"></div>
+    </header>
+
+    <!-- 2. Left Slide Drawer (Jennie shopasia.jenn.ie style) -->
+    <div class="drawer-backdrop" id="drawerBackdrop" onclick="closeDrawer()"></div>
+    <div class="left-drawer" id="leftDrawer">
+        <button class="drawer-close-btn" onclick="closeDrawer()">✕</button>
+        <ul class="drawer-menu-list">
+            <li><a href="#what-is-yeux" onclick="closeDrawer()">- WHAT IS YEUX</a></li>
+            <li><a href="#fashion" onclick="closeDrawer()">- FASHION</a></li>
+            <li><a href="#wedding" onclick="closeDrawer()">- WEDDING</a></li>
+            <li><a href="#casa" onclick="closeDrawer()">- CASA</a></li>
+            <li><a href="#idea" onclick="closeDrawer()">- IDEA</a></li>
+            <li><a href="#picture" onclick="closeDrawer()">- PICTURE</a></li>
+            <li>
+                <a href="#yeux-magazine" onclick="closeDrawer()">- YEUX MAGAZINE</a>
+                <div class="magazine-sub-links">
+                    <a href="yeux.%20for%20me.pdf" target="_blank">• yeux. for me.pdf</a>
+                    <a href="yeux.%20runway.pdf" target="_blank">• yeux. runway.pdf</a>
+                    <a href="yeux.%20vivi.pdf" target="_blank">• yeux. vivi.pdf</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <!-- 3. Hero Visual Background Cover (Full screen IMG_4798.jpeg) -->
+    <section class="hero-cover">
+        <div class="hero-title">yeux</div>
+        <div class="hero-subtitle">Visual & Editorial Archive</div>
+    </section>
+
+    <!-- 4. Main Content Area -->
+    <div class="main-container">
+
+        <!-- 1. what is yeux -->
+        <section id="what-is-yeux" class="category-block">
+            <div class="category-header">
+                <h2 class="category-name">- WHAT IS YEUX</h2>
+                <span class="category-number">01 / 07</span>
+            </div>
+            <p class="category-text">
+                yeux is a personal archive gathering photography, high-fashion runways, wedding inspirations, interior & furniture designs, and creative visual fragments.
+            </p>
+        </section>
+
+        <!-- 2. fashion -->
+        <section id="fashion" class="category-block">
+            <div class="category-header">
+                <h2 class="category-name">- FASHION</h2>
+                <span class="category-number">02 / 07</span>
+            </div>
+            <div class="vertical-feed">
+                <div class="feed-card">
+                    <img src="IMG_4798.jpeg" alt="fashion">
+                    <div class="caption">
+                        <span>Fashion Archive #01</span>
+                        <span>2026</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. wedding -->
+        <section id="wedding" class="category-block">
+            <div class="category-header">
+                <h2 class="category-name">- WEDDING</h2>
+                <span class="category-number">03 / 07</span>
+            </div>
+            <div class="vertical-feed">
+                <div class="feed-card">
+                    <img src="IMG_4798.jpeg" alt="wedding">
+                    <div class="caption">
+                        <span>Wedding Inspiration #01</span>
+                        <span>2026</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. casa -->
+        <section id="casa" class="category-block">
+            <div class="category-header">
+                <h2 class="category-name">- CASA</h2>
+                <span class="category-number">04 / 07</span>
+            </div>
+            <div class="vertical-feed">
+                <div class="feed-card">
+                    <img src="IMG_4798.jpeg" alt="casa">
+                    <div class="caption">
+                        <span>Casa & Living #01</span>
+                        <span>2026</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. idea -->
+        <section id="idea" class="category-block">
+            <div class="category-header">
+                <h2 class="category-name">- IDEA</h2>
+                <span class="category-number">05 / 07</span>
+            </div>
+            <div class="vertical-feed">
+                <div class="feed-card">
+                    <img src="IMG_4798.jpeg" alt="idea">
+                    <div class="caption">
+                        <span>Visual Idea #01</span>
+                        <span>2026</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. picture -->
+        <section id="picture" class="category-block">
+            <div class="category-header">
+                <h2 class="category-name">- PICTURE</h2>
+                <span class="category-number">06 / 07</span>
+            </div>
+            <div class="vertical-feed">
+                <div class="feed-card">
+                    <img src="IMG_4798.jpeg" alt="picture">
+                    <div class="caption">
+                        <span>Photography Archive #01</span>
+                        <span>2026</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. yeux magazine -->
+        <section id="yeux-magazine" class="category-block">
+            <div class="category-header">
+                <h2 class="category-name">- YEUX MAGAZINE</h2>
+                <span class="category-number">07 / 07</span>
+            </div>
+            <p class="category-text" style="margin-bottom: 20px;">
+                Curated PDF magazine series from the yeux collection. Tap any issue below to view the complete document.
+            </p>
+            <div class="magazine-grid">
+                <a href="yeux.%20for%20me.pdf" target="_blank" class="pdf-card">
+                    <div>
+                        <div class="pdf-tag">Issue 01 • PDF</div>
+                        <div class="pdf-title">yeux. for me</div>
+                    </div>
+                    <div class="pdf-action">Open Document →</div>
+                </a>
+
+                <a href="yeux.%20runway.pdf" target="_blank" class="pdf-card">
+                    <div>
+                        <div class="pdf-tag">Issue 02 • PDF</div>
+                        <div class="pdf-title">yeux. runway</div>
+                    </div>
+                    <div class="pdf-action">Open Document →</div>
+                </a>
+
+                <a href="yeux.%20vivi.pdf" target="_blank" class="pdf-card">
+                    <div>
+                        <div class="pdf-tag">Issue 03 • PDF</div>
+                        <div class="pdf-title">yeux. vivi</div>
+                    </div>
+                    <div class="pdf-action">Open Document →</div>
+                </a>
+            </div>
+        </section>
+
+    </div>
+
+    <footer>
+        © yeux Archive. All rights reserved.
+    </footer>
+
+    <script>
+        function openDrawer() {
+            document.getElementById('leftDrawer').classList.add('active');
+            document.getElementById('drawerBackdrop').classList.add('active');
+        }
+
+        function closeDrawer() {
+            document.getElementById('leftDrawer').classList.add('active') ? document.getElementById('leftDrawer').classList.remove('active') : null;
+            document.getElementById('drawerBackdrop').classList.remove('active');
+        }
+    </script>
+</body>
+</html>
